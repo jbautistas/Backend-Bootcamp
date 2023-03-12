@@ -5,6 +5,7 @@ import Env from '@ioc:Adonis/Core/Env'
 const bcryptjs = require('bcryptjs')
 
 export default class UsuariosController {
+
     public async registrarUsuario({request}: HttpContextContract){
         const {nombres, correo, contrasena} = request.all();
         const salt = bcryptjs.genSaltSync()
@@ -15,6 +16,7 @@ export default class UsuariosController {
         await usuario.save();
         return {usuario, "msg": "Usuario registrado"}
     }
+
     public async login({request, response}: HttpContextContract){
         const correo = request.input('correo');
         const contrasena = request.input('contrasena');
@@ -41,6 +43,7 @@ export default class UsuariosController {
             response.json({"msg": "Credenciales invalidas"});
         }
     }
+
     public generarToken(payload: any): string{
         const opciones = {
             expiresIn: "5 mins"

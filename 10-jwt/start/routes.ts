@@ -24,16 +24,17 @@ Route.get('/', async () => {
   return { hello: 'world' }
 }).middleware("auth")
 
-Route.group(() => {
-  Route.post("/register", "UsuariosController.registrarUsuario")
-  Route.post("/login", "UsuariosController.login")
-    Route.group(() => {
-      Route.get("books", "BooksController.index");
-      Route.get("books/:id", "BooksController.show");
-      Route.put("books/update/:id", "BooksController.update");
-      Route.post("books/create", "BooksController.store");
-    }
-    ).middleware("auth")
-
+Route.group(() =>{
+  Route.post("/register", "UsuariosController.registrar");
+  Route.post("/login", "UsuariosController.login");  
 }).prefix("api")
 
+Route.group(() => {
+  Route.post("/register", "PerfilsController.registrar");
+  Route.get("/listar", "PerfilsController.getListarPerfiles");
+}).prefix("/api/perfil").middleware("auth")
+
+Route.group(() => {
+  Route.post("/register", "LibrosController.registrar");
+  Route.get("/listar", "LibrosController.getListarLibros");
+}).prefix("/api/libro").middleware("auth")
