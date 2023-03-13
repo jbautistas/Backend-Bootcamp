@@ -25,7 +25,7 @@ export default class User extends BaseModel {
     localKey: 'rol_id',
     foreignKey: 'id'
   })
-  public role_id: HasMany<typeof Role>
+  public rol_id: HasMany<typeof Role>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
