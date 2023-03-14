@@ -6,6 +6,31 @@ const bcryptjs = require('bcryptjs');
 
 export default class UsersController {
 
+  public async getUsers({response}: HttpContextContract){
+    const users = await User.all();
+    if (users.length == 0){
+      return response.status(400).json({
+        "state": false,
+        "msg": "Fallo en el listado de estudiantes"
+        })
+    } else {
+      return response.status(200).json({
+        "state": true,
+        "msg": "Listado de estudiantes",
+        "users": users.map((user) => {
+          return {
+            "first_name": user.first_name,
+            "second_name": user.second_name,
+            "surname": user.surname,
+            "second_surname": user.second_surname,
+            "type_document": 1,
+            "document_number": user.document_number,
+            "email": user.email,
+            "phone": user.phone
+          }})
+      })
+    }
+  }
   public async registerUser({request}: HttpContextContract){
     const {
       first_name,
@@ -16,24 +41,31 @@ export default class UsersController {
       document_number,
       email,
       password,
-      rol_id,
-      phone,
+      phone
       } = request.all();
     const salt = bcryptjs.genSaltSync()
     const user = new User();
-    user.first_name = first_name;
-    user.second_name = second_name;
-    user.surname = surname;
-    user.second_surname = second_surname;
-    user.type_document = type_document;
-    user.document_number = document_number;
-    user.email = email;
-    user.password = bcryptjs.hashSync(password, salt);
-    user.rol_id = rol_id;
-    user.phone = phone;
-    user.state = true;
-    await user.save();
-    return {user, "msg": "Usuario registrado"}
+    try{
+      user.first_name = first_name;
+      user.second_name = second_name;
+      user.surname = surname;
+      user.second_surname = second_surname;
+      user.type_document = type_document;
+      user.document_number = document_number;
+      user.email = email;
+      user.password = bcryptjs.hashSync(password, salt);
+      user.phone = phone;
+      user.merge({state: true});
+      await user.save();
+      return {
+        "state": true,
+        "msg": "Estudiante creado con exito"}
+    } catch (error){
+      return {
+        "state": false,
+        "msg": "Fallo en la creacion del estudiante",
+        "error": error}
+    }
   }
 
   public async login({request, response}: HttpContextContract){
@@ -54,7 +86,7 @@ export default class UsersController {
         "second_name" : user.second_name,
         "id" : user.id
       }
-      const token:string = this.generarToken(payload);
+      const token:string = this.generateToken(payload);
       response.status(200).json({
         token,
         "msg": "Usuario logueado"
@@ -64,13 +96,13 @@ export default class UsersController {
     }
   }
 
-  public generarToken(payload: any): string{
-    const opciones = {
+  public generateToken(payload: any): string{
+    const options = {
       expiresIn: "5 mins"
     }
-    return jwt.sign(payload, Env.get('JWT_SECRET_KEY'), opciones)
+    return jwt.sign(payload, Env.get('JWT_SECRET_KEY'), options)
   }
-  public verificarToken(authorizationHeader:string){
+  public verifyToken(authorizationHeader:string){
     let token = authorizationHeader.split(' ')[1]
     token = jwt.verify(token, Env.get('JWT_SECRET_KEY'), (error) => {
       if(error){

@@ -6,5 +6,5 @@ test('login', async ({ client, assert }) => {
   const response = await client.get('/')
     .header('Authorization', `Bearer ${token}`)
   response.assertStatus(200)
-  assert.isArray(response.body)
+  assert.isObject(response.body)
 })
