@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import jwt from 'jsonwebtoken';
 import Env from '@ioc:Adonis/Core/Env';
+import Role from 'App/Models/Role';
 const bcryptjs = require('bcryptjs');
 
 export default class UsersController {
@@ -74,14 +75,17 @@ export default class UsersController {
   public async loginUser({request, response}: HttpContextContract){
     const {email, password} = request.all();
     try {
-      //consultar si existe el usuario
       const user = await User.findBy('email', email);
       if(!user){
-        return response.status(400).json({"msg": "El usuario no existe"});
+        throw new Error("El usuario no existe");
       }
       const validaPassword = bcryptjs.compareSync(password, user.password);
       if (!validaPassword){
-        return response.status(400).json({"msg": "La contrasena  es invalida"});
+        throw new Error("Contraseña invalida")
+      }
+      const rol = await Role.findBy('id', user.rol_id)
+      if (!rol){
+        throw new Error("Rol no encontrado")
       }
       const payload = {
         "first_name" : user.first_name,
@@ -94,12 +98,11 @@ export default class UsersController {
         "state": true,
         "id": user.id,
         "name": user.first_name + " " + user.second_name + " " + user.surname + " " + user.second_surname,
-        "role": user.rol_id + " ",
+        "role": rol.name,
         "message": "Ingreso exitoso"
       })
     } catch (error) {
         response.json({
-          error,
           "state": false,
           "message": "contraseña o email invalido"});
     }
