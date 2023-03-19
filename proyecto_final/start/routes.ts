@@ -25,11 +25,17 @@ Route.get('/', async () => {
 }).middleware("auth")
 
 Route.group(() => {
+  Route.post("/login", "UsersController.loginUser")
+
   Route.group(() => {
     Route.get("/getUsers", "UsersController.getUsers")
     Route.post("/create", "UsersController.registerUser")
   }).prefix("/user")
-  Route.post("/login", "UsersController.loginUser")
+
+  Route.post("/role/create", "RolesController.createRole")
+  Route.get("/role/get", "RolesController.getRoles")
+  Route.post("/type/create", "TypeDocumentsController.createTypeDocument")
+  Route.get("/type/get", "TypeDocumentsController.getTypeDocuments")
 
   Route.group(() => {
     Route.get("/users", "UsersController.index")

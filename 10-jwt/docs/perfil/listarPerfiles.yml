@@ -1,0 +1,24 @@
+/api/perfil/listar:
+  get:
+    tags:
+      - Perfil
+    security: []
+    description: Listar perfiles
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Petición exitosa
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Perfil'
+              example:
+                {
+                      "id_perfil": 2,
+                      "nombre_perfil": "Usuario",
+                      "created_at": "2023-03-02T18:40:05.863-05:00",
+                      "updated_at": "2023-03-02T18:40:05.863-05:00"
+                }

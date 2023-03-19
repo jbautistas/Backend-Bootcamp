@@ -1,0 +1,25 @@
+definitions:
+  Perfil:
+    type: object
+    properties:
+      id_perfil:
+        type: number
+      nombre_perfil:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+
+components:
+  schemas:
+    perfil:
+        type: object
+        properties:            
+            nombrePerfil:
+                type: string
+                description: Nombre del perfil
+        required:
+            - nombrePerfil            
+        example:
+            nombrePerfil: Administrador

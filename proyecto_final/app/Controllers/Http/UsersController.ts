@@ -19,65 +19,67 @@ export default class UsersController {
         "msg": "Listado de estudiantes",
         "users": users.map((user) => {
           return {
-            "first_name": user.first_name,
-            "second_name": user.second_name,
+            "firstName": user.first_name,
+            "secondName": user.second_name,
             "surname": user.surname,
-            "second_surname": user.second_surname,
-            "type_document": 1,
-            "document_number": user.document_number,
+            "secondSurName": user.second_surname,
+            "typeDocument": user.type_document,
+            "documentNumber": user.document_number,
             "email": user.email,
             "phone": user.phone
-          }})
+          }
+        })
       })
     }
   }
+
   public async registerUser({request}: HttpContextContract){
     const {
-      first_name,
-      second_name, 
+      firstName,
+      secondName, 
       surname,
-      second_surname,
-      type_document,
-      document_number,
+      secondSurName,
+      typeDocument,
+      documentNumber,
       email,
       password,
+      rol,
       phone
       } = request.all();
     const salt = bcryptjs.genSaltSync()
     const user = new User();
     try{
-      user.first_name = first_name;
-      user.second_name = second_name;
+      user.first_name = firstName;
+      user.second_name = secondName;
       user.surname = surname;
-      user.second_surname = second_surname;
-      user.type_document = type_document;
-      user.document_number = document_number;
+      user.second_surname = secondSurName;
+      user.type_document = typeDocument;
+      user.document_number = documentNumber;
       user.email = email;
       user.password = bcryptjs.hashSync(password, salt);
+      user.rol_id = rol;
       user.phone = phone;
-      user.merge({state: true});
       await user.save();
       return {
         "state": true,
         "msg": "Estudiante creado con exito"}
     } catch (error){
       return {
+        error,
         "state": false,
-        "msg": "Fallo en la creacion del estudiante",
-        "error": error}
+        "msg": "Fallo en la creación del estudiante",}
     }
   }
 
-  public async login({request, response}: HttpContextContract){
-    const correo = request.input('correo');
-    const contrasena = request.input('contrasena');
+  public async loginUser({request, response}: HttpContextContract){
+    const {email, password} = request.all();
     try {
       //consultar si existe el usuario
-      const user = await User.findBy('correo', correo);
+      const user = await User.findBy('email', email);
       if(!user){
         return response.status(400).json({"msg": "El usuario no existe"});
       }
-      const validaPassword = bcryptjs.compareSync(contrasena, user.password);
+      const validaPassword = bcryptjs.compareSync(password, user.password);
       if (!validaPassword){
         return response.status(400).json({"msg": "La contrasena  es invalida"});
       }
@@ -88,11 +90,18 @@ export default class UsersController {
       }
       const token:string = this.generateToken(payload);
       response.status(200).json({
-        token,
-        "msg": "Usuario logueado"
+        //token,
+        "state": true,
+        "id": user.id,
+        "name": user.first_name + " " + user.second_name + " " + user.surname + " " + user.second_surname,
+        "role": user.rol_id + " ",
+        "message": "Ingreso exitoso"
       })
     } catch (error) {
-        response.json({"msg": "Credenciales invalidas"});
+        response.json({
+          error,
+          "state": false,
+          "message": "contraseña o email invalido"});
     }
   }
 

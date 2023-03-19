@@ -32,8 +32,7 @@ Route.group(() =>{
 Route.group(() => {
   Route.post("/register", "PerfilsController.registrar");
   Route.get("/listar", "PerfilsController.getListarPerfiles");
-}).prefix("/api/perfil").middleware("auth")
-
+}).prefix("/api/perfil")
 Route.group(() => {
   Route.post("/register", "LibrosController.registrar");
   Route.get("/listar", "LibrosController.getListarLibros");

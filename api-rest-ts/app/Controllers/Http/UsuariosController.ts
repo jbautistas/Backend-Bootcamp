@@ -10,6 +10,7 @@ export default class UsuariosController {
         const user = await Usuario
         .query()
         .preload('perfil')
+        console.log(user)
         return user;
     }
     public async getListarUsuariosYPublicacion(): Promise<Usuario[]> {
