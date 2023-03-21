@@ -2,19 +2,13 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import jwt from 'jsonwebtoken';
 import Env from '@ioc:Adonis/Core/Env';
-import Role from 'App/Models/Role';
 const bcryptjs = require('bcryptjs');
 
 export default class UsersController {
 
   public async getUsers({response}: HttpContextContract){
-    const users = await User.all();
-    if (users.length == 0){
-      return response.status(400).json({
-        "state": false,
-        "msg": "Fallo en el listado de estudiantes"
-        })
-    } else {
+    try {
+      const users = await User.all();
       return response.status(200).json({
         "state": true,
         "msg": "Listado de estudiantes",
@@ -31,6 +25,11 @@ export default class UsersController {
           }
         })
       })
+    } catch (error) {
+      return response.status(400).json({
+        "state": false,
+        "msg": "Fallo en el listado de estudiantes"
+        })
     }
   }
 
@@ -79,14 +78,14 @@ export default class UsersController {
       if(!user){
         throw new Error("El usuario no existe");
       }
+
+      await user.load('rolID') // Load the relationship
+
       const validaPassword = bcryptjs.compareSync(password, user.password);
       if (!validaPassword){
         throw new Error("Contraseña invalida")
       }
-      const rol = await Role.findBy('id', user.rol_id)
-      if (!rol){
-        throw new Error("Rol no encontrado")
-      }
+
       const payload = {
         "first_name" : user.first_name,
         "second_name" : user.second_name,
@@ -98,13 +97,76 @@ export default class UsersController {
         "state": true,
         "id": user.id,
         "name": user.first_name + " " + user.second_name + " " + user.surname + " " + user.second_surname,
-        "role": rol.name,
+        "role": user.rolID.name,
         "message": "Ingreso exitoso"
       })
     } catch (error) {
         response.json({
           "state": false,
           "message": "contraseña o email invalido"});
+    }
+  }
+
+  public async updateUser({request, response}: HttpContextContract){
+    const {
+      firstName,
+      secondName,
+      surname,
+      secondSurName,
+      typeDocument,
+      documentNumber,
+      email,
+      phone
+      } = request.all();
+    const id = request.param('id');
+    try {
+      const user = await User.findBy('id', id);
+      if(!user){
+        throw new Error("El usuario no existe");
+      }
+      user.first_name = firstName;
+      user.second_name = secondName;
+      user.surname = surname;
+      user.second_surname = secondSurName;
+      user.type_document = typeDocument;
+      user.document_number = documentNumber;
+      user.email = email;
+      user.phone = phone;
+      await user.save();
+      return response.status(200).json({
+        "state": true,
+        "msg": "Se actualizo correctamente"
+      })
+    } catch (error) {
+      return response.status(400).json({
+        "state": false,
+        "msg": "Error al actualizar"
+      })
+    }
+  }
+
+  public async getUser({request, response}: HttpContextContract){
+    const id = request.param('id');
+    try {
+      const user = await User.findBy('id', id);
+      if(!user){
+        throw new Error("El usuario no existe");
+      }
+      return response.status(200).json({
+        "firstName": user.first_name,
+        "secondName": user.second_name,
+        "surname": user.surname,
+        "secondSurName": user.second_surname,
+        "typeDocument": user.type_document,
+        "documentNumber": user.document_number,
+        "email": user.email,
+        "phone": user.phone
+      })
+    } catch (error) {
+      return response.status(400).json({
+        "state": false,
+        "message": "Error al consultar el detalle del usuario"
+      })
     }
   }
 

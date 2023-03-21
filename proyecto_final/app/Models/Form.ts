@@ -1,17 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import Question from './Question'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Form extends BaseModel {
   @column({ isPrimary: true }) public id: number
-  @column() public student_id: string
+  @column() public student_id: number
   @column() public state: boolean
-
-  @hasMany(() => Question, {
-    localKey: 'question_id',
-    foreignKey: 'id',
-  })
-  public question_id: HasMany<typeof Question>
+  @column() public answer_id: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

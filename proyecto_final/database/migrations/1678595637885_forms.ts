@@ -6,8 +6,10 @@ export default class Forms extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.string('student_id', 180).notNullable()
-      table.integer('question_id').unsigned().references('id').inTable('questions').onDelete('CASCADE')
+      table.integer('student_id').unsigned().notNullable().index('student_id')
+      table.foreign('student_id').references('id').inTable('users').onDelete('CASCADE')
+      table.integer('answer_id').unsigned().notNullable().index('answer_id')
+      table.foreign('answer_id').references('id').inTable('answers').onDelete('CASCADE')
       table.boolean('state').notNullable()
       table.timestamps(true)
     })

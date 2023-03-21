@@ -1,5 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import TypeDocument from './TypeDocument'
+import Role from './Role'
+import Answer from './Answer'
 //import TypeDocument from './TypeDocument'
 //import Role from './Role'
 
@@ -17,17 +20,25 @@ export default class User extends BaseModel {
   @column() public rol_id: number /* Foreign key */
   @column() public state: boolean
 
-  //@hasMany(() => TypeDocument, {
-    //localKey: 'type_document',
-    //foreignKey: 'id',
-  //})
-  //public type_document: HasMany<typeof TypeDocument>
+  @belongsTo(() => TypeDocument, {
+    localKey: 'id',
+    foreignKey: 'type_document',
+  })
+  public typeDocument: BelongsTo<typeof TypeDocument>
 
-  //@hasMany(() => Role, {
-    //localKey: 'rol_id',
-    //foreignKey: 'id'
-  //})
-  //public rol_id: HasMany<typeof Role>
+  @belongsTo(() => Role, {
+    localKey: 'id',
+    foreignKey: 'rol_id',
+  })
+  public rolID: BelongsTo<typeof Role>
+
+  @manyToMany(() => Answer, {
+      localKey: 'id',
+      pivotForeignKey: 'student_id',
+      relatedKey: 'id',
+      pivotRelatedForeignKey: 'answer_id'
+  })
+  public answers: ManyToMany<typeof Answer>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Question from './Question'
 
 export default class Answer extends BaseModel {
@@ -7,12 +7,15 @@ export default class Answer extends BaseModel {
   @column() public answer: string
   @column() public is_correct: boolean
   @column() public state: boolean
+  @column() public question_id: number /* Foreign Key */
 
-  @hasMany(() => Question, {
-    localKey: 'question_id',
-    foreignKey: 'id',
+  @belongsTo(() => Question, {
+    foreignKey: 'question_id',
+    localKey: 'id'
   })
-  public question_id: HasMany<typeof Question>
+
+  public questionID: BelongsTo<typeof Question>
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
