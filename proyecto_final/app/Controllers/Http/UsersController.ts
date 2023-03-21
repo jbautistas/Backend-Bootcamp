@@ -33,7 +33,7 @@ export default class UsersController {
     }
   }
 
-  public async registerUser({request}: HttpContextContract){
+  public async registerUser({request, response}: HttpContextContract){
     const {
       firstName,
       secondName, 
@@ -60,14 +60,14 @@ export default class UsersController {
       user.rol_id = rol;
       user.phone = phone;
       await user.save();
-      return {
+      response.status(200).json({
         "state": true,
-        "msg": "Estudiante creado con exito"}
+        "msg": "Estudiante creado con exito"})
     } catch (error){
-      return {
+      response.status(400).json({
         error,
         "state": false,
-        "msg": "Fallo en la creación del estudiante",}
+        "msg": "Fallo en la creación del estudiante",})
     }
   }
 
@@ -101,7 +101,7 @@ export default class UsersController {
         "message": "Ingreso exitoso"
       })
     } catch (error) {
-        response.json({
+        response.status(400).json({
           "state": false,
           "message": "contraseña o email invalido"});
     }

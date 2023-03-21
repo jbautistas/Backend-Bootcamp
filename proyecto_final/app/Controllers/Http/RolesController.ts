@@ -11,7 +11,7 @@ export default class RolesController {
     return {role, "msg": "Rol creado"}
   }
 
-  public async getRoles({}: HttpContextContract){
+  public async getRoles(){
     try {
       const roles = await Role.all();
       return roles;

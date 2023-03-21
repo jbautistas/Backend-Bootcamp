@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import TypeDocument from 'App/Models/TypeDocument';
 
 export default class TypeDocumentsController {
-    public async getTypeDocuments({}: HttpContextContract){
+    public async getTypeDocuments(){
         try {
             const typeDocuments = await TypeDocument.all();
             return typeDocuments;
