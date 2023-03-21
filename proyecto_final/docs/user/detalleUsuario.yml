@@ -1,0 +1,36 @@
+paths:
+  /api/v1/user/getUser/{id}:
+    get:
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The user ID
+      description: Detalle Usuario
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Petición exitosa
+          content:
+            applicaiton/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/definitions/User'
+              example:
+                {
+                  "firstName": "Gabriela",
+                  "secondName": " ",
+                  "surname": "Trujillo",
+                  "secondSurName": "Gutierrez",
+                  "typeDocument": 1,
+                  "documentNumber": 51231541,
+                  "email": "gutu232@gmail.com",
+                  "phone": "3212243333"
+                }

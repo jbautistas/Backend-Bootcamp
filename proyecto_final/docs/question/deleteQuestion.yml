@@ -1,0 +1,28 @@
+paths:
+  /api/v1/questions/deleteQuestion/{id}:
+    delete:
+      tags:
+        - Question
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Question ID
+      description: Eliminar una pregunta
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Petición exitosa
+          content:
+            applicaiton/json:
+              schema:
+                type: object
+              example:
+                {
+                  "state": true,
+                  "message": "Pregunta eliminada con exito"
+                }

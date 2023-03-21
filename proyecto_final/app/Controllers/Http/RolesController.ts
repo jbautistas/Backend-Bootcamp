@@ -2,39 +2,39 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Role from 'App/Models/Role';
 
 export default class RolesController {
-  public async createRole({request}: HttpContextContract){
+  public async createRole({request,response}: HttpContextContract){
     const {name} = request.all();
-    const role = new Role();
-    role.name = name;
-    role.state = true;
-    await role.save();
-    return {role, "msg": "Rol creado"}
-  }
-
-  public async getRoles(){
     try {
-      const roles = await Role.all();
-      return roles;
+      const role = new Role();
+      role.name = name;
+      role.state = true;
+      await role.save();
+      response.status(200).json({
+        "status": true,
+        "message": "Rol creado con exito",
+        "role": role
+      })
     } catch (error) {
-      return {error, "msg": "Error al obtener los roles"}
+      response.status(400).json({
+        "status": false,
+        "message": "No se pudo crear el rol",
+      })
     }
   }
 
-  public async updateRole({request, params}: HttpContextContract){
-    const role = await Role.find(params.id);
-    if(role){
-      role.name = request.all().name;
-      if(await role.save()){
-        return {role, "msg": "Rol actualizado"}
-      }
-      return {
-        "msg": "No se pudo actualizar el rol",
-        "estado": 401}
-    } else {
-      return {
-        "msg": "Rol no encontrado",
-        "estado": 401
-      }
+  public async getRoles({response}: HttpContextContract){
+    try {
+      const roles = await Role.all();
+      response.status(200).json({
+        "state": true,
+        "message": "Listado de roles",
+        "roles": roles
+      })
+    } catch (error) {
+      response.status(400).json({
+        "state": false,
+        "message": "Fallo en el listado de roles"
+      })
     }
   }
 }

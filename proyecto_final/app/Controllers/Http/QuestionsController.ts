@@ -6,7 +6,7 @@ export default class QuestionsController {
   public async createQuestion({request, response}: HttpContextContract){
     const { question, options } = request.all();
     try {
-      const newQuestion = await Question.create({question: question, state: true})
+      const newQuestion = await Question.create({question: question, state: false})
       await Answer.createMany(options.map((option: any) => {
         return {
           answer: option.opcion,
@@ -15,6 +15,8 @@ export default class QuestionsController {
           question_id: newQuestion.id
         }
       }))
+      newQuestion.state = true
+      newQuestion.save()
       return response.status(200).json({
         "state": true,
         "message": "Pregunta creada exitosamente"

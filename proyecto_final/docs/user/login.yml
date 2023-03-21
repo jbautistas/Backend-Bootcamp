@@ -1,0 +1,42 @@
+/api/v1/login:
+  post:
+    tags:
+      - User
+    security: []
+    description: login user
+    requestBody:
+      content:
+        application/json:
+          schema:
+             $ref: '#/components/schemas/user_login'            
+    responses:
+      200:
+        description: Petición exitosa
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: boolean
+                  description: estado de la peticion
+                id:
+                  type: number
+                  description: Id del usuario
+                name:
+                  type: string
+                  description: nombre completo
+                role:
+                  type: string
+                  description: rol del usuario
+                message:
+                  type: string
+                  description: Mensaje de respuesta 
+            example:
+              {
+                    "state": true,
+                    "id": 2,
+                    "name": "daniel jose cruz casallas",
+                    "role": "Estudiante",
+                    "message": "Ingreso exitoso"
+              }

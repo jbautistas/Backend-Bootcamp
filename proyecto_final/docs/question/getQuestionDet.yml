@@ -1,0 +1,48 @@
+paths:
+  /api/v1/questions/getOptions/{id}:
+    get:
+      tags:
+        - Question
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Question ID
+      description: Obtener las opciones de una pregunta
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Petición exitosa
+          content:
+            applicaiton/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/definitions/Question'
+              example:
+                {
+                  "state": true,
+                  "message": "Listado de opciones",
+                  "options": [
+                    {
+                      "id": 24,
+                      "option": "Colombia"
+                    },
+                    {
+                      "id": 25,
+                      "option": "Ecuador"
+                    },
+                    {
+                      "id": 26,
+                      "option": "Peru"
+                    },
+                    {
+                      "id": 27,
+                      "option": "Panama"
+                    }
+                  ]
+                }

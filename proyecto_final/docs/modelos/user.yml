@@ -1,0 +1,150 @@
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: number
+      first_name:
+        type: string
+      second_name:
+        type: string
+      surname:
+        type: string
+      second_surname:
+        type: string
+      type_document:
+        type: number
+      document_number:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      rol_id:
+        type: number
+      state:
+        type: boolean
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+      
+components:
+  schemas:
+    user_login:
+        type: object
+        properties:            
+            email:
+                type: string
+                description: email del usuario 
+            password:
+                type: string
+                description: clave del usuario
+        required:
+            - email            
+            - password
+        example:
+            email: danielc88@gmail.co 
+            password: 32jdkdi
+    user_create:
+        type: object
+        properties:            
+            firstName: 
+                type: string
+                description: Primer nombre
+            secondName:
+                type: string
+                description: Segundo nombre
+            surname:
+                type: string
+                description: Primer apellido
+            secondSurName:
+                type: string
+                description: Segundo apellido
+            typeDocument:
+                type: number
+                description: Id del tipo de documento
+            documentNumber:
+                type: string
+                description: Numero de documento
+            email:
+                type: string
+                description: email del usuario 
+            password:
+                type: string
+                description: clave del usuario
+            rol:
+                type: number
+                description: id del rol del usuario, 1 Administrador, 2 Estudiante
+            phone:
+                type: string
+                description: numero de telefono del usuario
+        required:
+            - firstName
+            - secondName
+            - surname
+            - secondSurName
+            - typeDocument
+            - documentNumber
+            - email
+            - password
+            - rol
+            - phone
+        example:
+            firstName: Jose
+            secondName: Ricardo
+            surname: Gomez
+            secondSurName: Aristisabal 
+            typeDocument: 1
+            documentNumber: 1234123122
+            email: jose21@gmail.com
+            password: 123456
+            rol: 2
+            phone: 3212312341
+    user_edit:
+        type: object
+        properties:            
+            firstName: 
+                type: string
+                description: Primer nombre
+            secondName:
+                type: string
+                description: Segundo nombre
+            surname:
+                type: string
+                description: Primer apellido
+            secondSurName:
+                type: string
+                description: Segundo apellido
+            typeDocument:
+                type: number
+                description: Id del tipo de documento
+            documentNumber:
+                type: string
+                description: Numero de documento
+            email:
+                type: string
+                description: email del usuario 
+            phone:
+                type: string
+                description: numero de telefono del usuario
+        required:
+            - firstName
+            - secondName
+            - surname
+            - secondSurName
+            - typeDocument
+            - documentNumber
+            - email
+            - phone
+        example:
+            firstName: daniel
+            secondName: jose
+            surname: cruz
+            secondSurName: casallas 
+            typeDocument: 1
+            documentNumber: 123451119
+            email: daniel111@gmail.co
+            phone: 32123122315

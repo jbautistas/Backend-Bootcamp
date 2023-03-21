@@ -1,0 +1,29 @@
+/api/v1/form/postquestions:
+  post:
+    tags:
+      - Form
+    description: Guardar las respuestas de un usuario
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/form_answers'
+    responses:
+      200:
+        description: Petición exitosa
+        content:
+          applicaiton/json:
+            schema:
+              type: object
+              properties:
+                state: 
+                  type: boolean
+                  description: Estado de la solicitud
+                message:
+                  type: string
+                  description: Mensaje de la solicitud
+            example:
+              {
+                "state": true,
+                "message": "Respuestas almacenadas con exito"
+              }

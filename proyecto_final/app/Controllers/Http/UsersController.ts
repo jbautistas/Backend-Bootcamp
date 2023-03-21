@@ -139,6 +139,7 @@ export default class UsersController {
       })
     } catch (error) {
       return response.status(400).json({
+        "error":error,
         "state": false,
         "msg": "Error al actualizar"
       })

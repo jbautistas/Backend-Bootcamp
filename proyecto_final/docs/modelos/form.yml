@@ -1,0 +1,36 @@
+definitions:
+  Form:
+    type: object
+    properties:
+      state:
+        type: boolean
+      questions:
+        type: object
+        properties:
+          question:
+            type: string
+          id:
+            type: string
+          options:
+            type: object
+            properties:
+              id:
+                type: number
+                answer: string
+components:
+  schemas:
+    form_answers:
+        type: object
+        properties:            
+            estudianteId:
+                type: number
+                description: id del usuario
+            answers:
+                type: array
+                description: contiene los ids de las respuestas de usuario
+        required:
+            - estudianteId            
+            - answers
+        example:
+            estudianteId: 6
+            answers: [22, 26] 

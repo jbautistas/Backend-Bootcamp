@@ -1,0 +1,62 @@
+/api/v1/form/getquestions:
+  get:
+    tags:
+      - Form
+    description: Listar preguntas con opciones
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Petición exitosa
+        content:
+          applicaiton/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Form'
+            example:
+              {
+                "state": true,
+                "questions": [
+                  {
+                    "question": "¿en que pais estas?",
+                    "id": 20,
+                    "options": [
+                      {
+                        "id": 24,
+                        "answer": "Colombia"
+                      },
+                      { "id": 25,
+                        "answer": "Ecuador"
+                      },
+                      {
+                        "id": 26,
+                        "answer": "Peru"
+                      },
+                      {
+                        "id": 27,
+                        "answer": "Panama"
+                      }
+                    ]
+                  },
+                    "question": "¿Que dia es hoy?",
+                    "id": 19,
+                    "options": [
+                      {
+                        "id": 21,
+                        "answer": "incorrecta"
+                      },
+                      { "id": 22,
+                        "answer": "incorrecta"
+                      },
+                      {
+                        "id": 23,
+                        "answer": "incorrecta"
+                      },
+                      {
+                        "id": 24,
+                        "answer": "esta es correcta"
+                      }
+                    ]
+                ]
+              }

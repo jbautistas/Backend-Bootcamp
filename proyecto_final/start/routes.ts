@@ -39,8 +39,8 @@ Route.group(() => {
     Route.post("/create", "QuestionsController.createQuestion")
     Route.get("/getQuestions", "QuestionsController.getQuestions")
     Route.delete("/deleteQuestion/:id", "QuestionsController.deleteQuestion")
-    Route.post("/updateQuestion/:id", "QuestionsController.updateQuestion")
-    Route.post("/updateAnswer/:id", "QuestionsController.updateAnswer")
+    Route.put("/updateQuestion/:id", "QuestionsController.updateQuestion")
+    Route.put("/updateAnswer/:id", "QuestionsController.updateAnswer")
     Route.get("/getOptions/:id", "QuestionsController.getOptions")
   }).prefix("/questions")
 

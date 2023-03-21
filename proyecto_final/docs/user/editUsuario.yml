@@ -1,0 +1,38 @@
+paths:
+  /api/v1/user/update/{id}:
+    put:
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The user ID
+      description: Actualizar Usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_edit'
+      responses:
+        200:
+          description: Petición exitosa
+          content:
+            applicaiton/json:
+              schema:
+                type: object
+                properties:
+                  state: 
+                    type: boolean
+                    description: Estado de la solicitud
+                  message:
+                    type: string
+                    description: Mensaje de la solicitud
+              example:
+                {
+                  "state": true,
+                  "message": "Se actualizo correctamente"
+                }
