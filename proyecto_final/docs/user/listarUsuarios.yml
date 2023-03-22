@@ -2,6 +2,8 @@
   get:
     tags:
       - User
+    security:
+    - bearerAuth: []
     description: Listar Usuarios
     produces:
       - application/json

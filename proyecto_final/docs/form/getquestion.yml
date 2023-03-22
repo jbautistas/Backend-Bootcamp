@@ -2,6 +2,8 @@
   get:
     tags:
       - Form
+    security:
+    - bearerAuth: []
     description: Listar preguntas con opciones
     produces:
       - application/json

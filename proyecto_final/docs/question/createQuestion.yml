@@ -2,6 +2,8 @@
   post:
     tags:
       - Question
+    security:
+    - bearerAuth: []
     description: Crear una pregunta con sus opciones de respuesta
     requestBody:
       content:

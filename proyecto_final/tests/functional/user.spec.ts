@@ -1,8 +1,11 @@
 import { test } from '@japa/runner'
+import { ObtainAuthToken } from './TestAdmin'
 
 test.group('User', () => {
   test('list get', async ({ client, assert }) => {
+    const token = await ObtainAuthToken()
     const response = await client.get('api/v1/user/getUsers')
+        .header('authorization', `Bearer ${token}`)
     response.assertStatus(200)
     assert.isObject(response.body())
   })
@@ -21,12 +24,16 @@ test.group('User', () => {
     assert.isObject(response.body())
   })
 
-  test('detalle estudiante get fail', async ({ client, assert }) => { const response = await client.get('api/v1/user/getUser/9999')
+  test('detalle estudiante get fail', async ({ client, assert }) => { 
+    const token = await ObtainAuthToken()
+    const response = await client.get('api/v1/user/getUser/9999')
+        .header('authorization', `Bearer ${token}`)
     response.assertStatus(400)
     assert.isObject(response.body())
   })
 
   test('edit put fail', async ({ client, assert }) => {
+    const token = await ObtainAuthToken()
     const response = await client.put('api/v1/user/update/99999').json({
       "firstName": "daniel",
       "secondName": "jose",
@@ -37,11 +44,13 @@ test.group('User', () => {
       "email": "danielc88@gmail.co,",
       "phone": "32123122314"
     })
+        .header('authorization', `Bearer ${token}`)
     response.assertStatus(400)
     assert.isObject(response.body())
   })
 
   test('edit put', async ({ client, assert }) => {
+    const token = await ObtainAuthToken()
     const response = await client.put('api/v1/user/update/10').json({
       "firstName": "daniel",
       "secondName": "jose",
@@ -52,12 +61,15 @@ test.group('User', () => {
       "email": "daniel111@gmail.co",
       "phone": "32123122315"
     })
+        .header('authorization', `Bearer ${token}`)
     response.assertStatus(200)
     assert.isObject(response.body())
   })
 
   test('detalle estudiante get', async ({ client, assert }) => {
+    const token = await ObtainAuthToken()
     const response = await client.get('api/v1/user/getUser/2')
+        .header('authorization', `Bearer ${token}`)
     response.assertStatus(200)
     assert.isObject(response.body())
   })

@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 import jwt from 'jsonwebtoken';
 import Env from '@ioc:Adonis/Core/Env';
+import { test } from '@japa/runner';
 const bcryptjs = require('bcryptjs');
 
 export default class UsersController {
@@ -87,13 +88,11 @@ export default class UsersController {
       }
 
       const payload = {
-        "first_name" : user.first_name,
-        "second_name" : user.second_name,
-        "id" : user.id
+        "rol" : user.rolID.id
       }
       const token:string = this.generateToken(payload);
       response.status(200).json({
-        //token,
+        token,
         "state": true,
         "id": user.id,
         "name": user.first_name + " " + user.second_name + " " + user.surname + " " + user.second_surname,
@@ -139,7 +138,6 @@ export default class UsersController {
       })
     } catch (error) {
       return response.status(400).json({
-        "error":error,
         "state": false,
         "msg": "Error al actualizar"
       })
@@ -173,17 +171,19 @@ export default class UsersController {
 
   public generateToken(payload: any): string{
     const options = {
-      expiresIn: "5 mins"
+      expiresIn: "60 mins"
     }
     return jwt.sign(payload, Env.get('JWT_SECRET_KEY'), options)
   }
-  public verifyToken(authorizationHeader:string){
+
+  public verifyToken(authorizationHeader:string): any {
     let token = authorizationHeader.split(' ')[1]
-    token = jwt.verify(token, Env.get('JWT_SECRET_KEY'), (error) => {
+    token = jwt.verify(token, Env.get('JWT_SECRET_KEY'), (error, decoded) => {
       if(error){
         throw new Error("Token expirado");
       }
+      return decoded.rol;
     })
-    return true
+    return token;
   }
 }

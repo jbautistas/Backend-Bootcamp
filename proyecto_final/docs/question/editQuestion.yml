@@ -3,6 +3,8 @@ paths:
     put:
       tags:
         - Question
+      security:
+      - bearerAuth: []
       parameters:
         - in: path
           name: id

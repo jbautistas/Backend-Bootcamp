@@ -27,37 +27,37 @@ Route.get('/', async () => {
 Route.group(() => {
 
   Route.post("/login", "UsersController.loginUser")
+  Route.post("/user/create", "UsersController.registerUser")
 
   Route.group(() => {
     Route.get("/getUsers", "UsersController.getUsers")
-    Route.post("/create", "UsersController.registerUser")
     Route.put("/update/:id", "UsersController.updateUser")
     Route.get("/getUser/:id", "UsersController.getUser")
-  }).prefix("/user")
+  }).prefix("/user").middleware("admin")
 
   Route.group(() => {
-    Route.post("/create", "QuestionsController.createQuestion")
-    Route.get("/getQuestions", "QuestionsController.getQuestions")
-    Route.delete("/deleteQuestion/:id", "QuestionsController.deleteQuestion")
-    Route.put("/updateQuestion/:id", "QuestionsController.updateQuestion")
-    Route.put("/updateAnswer/:id", "QuestionsController.updateAnswer")
-    Route.get("/getOptions/:id", "QuestionsController.getOptions")
+    Route.post("/create", "QuestionsController.createQuestion").middleware("admin")
+    Route.get("/getQuestions", "QuestionsController.getQuestions").middleware("auth")
+    Route.delete("/deleteQuestion/:id", "QuestionsController.deleteQuestion").middleware("admin")
+    Route.put("/updateQuestion/:id", "QuestionsController.updateQuestion").middleware("admin")
+    Route.put("/updateAnswer/:id", "QuestionsController.updateAnswer").middleware("admin")
+    Route.get("/getOptions/:id", "QuestionsController.getOptions").middleware("auth")
   }).prefix("/questions")
 
   Route.group(() => {
     Route.post("/create", "RolesController.createRole")
     Route.get("/get", "RolesController.getRoles")
-  }).prefix("/role")
+  }).prefix("/role").middleware("admin")
 
   Route.group(() => {
     Route.post("/create", "TypeDocumentsController.createTypeDocument")
     Route.get("/get", "TypeDocumentsController.getTypeDocuments")
-  }).prefix("/type")
+  }).prefix("/type").middleware("admin")
 
   Route.group(() => {
     Route.get("/getquestions", "FormsController.getQuestions")
     Route.post("/postquestions", "FormsController.postQuestions")
-  }).prefix("/form")
+  }).prefix("/form").middleware("auth")
 
 }).prefix("api/v1")
 

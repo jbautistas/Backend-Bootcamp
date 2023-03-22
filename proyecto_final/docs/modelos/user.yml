@@ -98,11 +98,11 @@ components:
             surname: Gomez
             secondSurName: Aristisabal 
             typeDocument: 1
-            documentNumber: 1234123122
-            email: jose21@gmail.com
-            password: 123456
+            documentNumber: "1234123122"
+            email: jose41@gmail.com
+            password: "223456"
             rol: 2
-            phone: 3212312341
+            phone: "3213312341"
     user_edit:
         type: object
         properties:            
@@ -145,6 +145,6 @@ components:
             surname: cruz
             secondSurName: casallas 
             typeDocument: 1
-            documentNumber: 123451119
+            documentNumber: "123451119"
             email: daniel111@gmail.co
-            phone: 32123122315
+            phone: "32123122315"
